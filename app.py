@@ -7,6 +7,11 @@ import json
 import pandas as pd
 import pprint
 
+from dash import Dash, html, dcc, callback, Output, Input
+import plotly.express as px
+import plotly.graph_objects as go
+import dash_bootstrap_components as dbc
+
 # data explenation
 
 # Doba i godzina: udtczas
@@ -65,4 +70,16 @@ json_object = json.dumps(data, indent=4)
 
 
 
+# data preparation
+df=df.rename(columns={'udtczas':'time',
+                      'swm_pbm_p_ow':'exchange',
+                      'kse_pbm_rez_d':'reserve',
+                      'kse_pbm_wrm_d':'required_reserve',
+                      's_pv_pbm_p_gen_prg':'pv',
+                      's_wi_pbm_p_gen_prg':'wind',
+                      'zap_pokr_pbm_zap_s':'demand'
+                        })
+
+
+print(df)
 
