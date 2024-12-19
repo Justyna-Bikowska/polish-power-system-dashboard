@@ -68,8 +68,6 @@ json_object = json.dumps(data, indent=4)
 #with open("KSE_data.json", "w") as outfile:
 #    outfile.write(json_object)
 
-
-
 # data preparation
 df=df.rename(columns={'udtczas':'time',
                       'swm_pbm_p_ow':'exchange',
@@ -81,5 +79,62 @@ df=df.rename(columns={'udtczas':'time',
                         })
 
 
-print(df)
+
+# application
+app = Dash(external_stylesheets=[dbc.themes.FLATLY])
+
+
+#  power reserve % chart
+
+
+df['reserve_pct'] = df['reserve']/df['demand']
+df['required_reserve_pct'] = 0.09
+#print(df)
+
+
+app.layout = dbc.Container(
+    [
+        html.H1(
+            "Rezerwy mocy w Krajowym Systemie Elektroenergetycznym",
+            style={'textAlign': 'center', 'color': 'white'}
+        ),
+        dbc.Row(
+            [
+                dbc.Col(  #left column
+                    dbc.Card(
+                        dbc.CardBody([
+                            html.H4("reserve", className="card-title", style={'color': '#ffffff'}),
+                            html.H4("reserve2",  style={'color': '#ffffff'})
+                        ]),
+                        style={'backgroundColor': '#082255', 'border': 'none'}  # Lighter shade for cards 082255
+                    ),
+                    width=4),
+                dbc.Col([  #right column
+                    dbc.Card(  #firt chart
+                        dbc.CardBody([
+                            html.H4("Rezerwy Mocy %", className="card-title", style={'color': '#ffffff'}),
+                            html.H4("line-plot2", style={'color': '#ffffff'})
+                        ]),
+                        style={'backgroundColor': '#082255', 'border': 'none'}  # Lighter shade for cards 082255
+                    ),
+                    dbc.Card(  #second chart
+                        dbc.CardBody([
+                            html.H4("Wind Speed Distribution", className="card-title", style={'color': '#ffffff'}),
+                            html.H4("line-plot3, fig7", style={'color': '#ffffff'})
+                        ]),
+                        style={'backgroundColor': '#082255', 'border': 'none'}  # Lighter shade for cards 082255
+                    )],
+                        width=8)
+                ]
+            ),
+        ],
+    style={'backgroundColor': '#061e44', 'color': '#e0e0e0', 'padding': '20px'},
+    fluid=True #container has margins set by default, so set fluid=True to avoid unintended margins at the top, bottom, left, and right, and between Sidebar and Content.
+    )
+
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
